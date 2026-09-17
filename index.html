@@ -1,0 +1,526 @@
+<title>Vianočné odpočítavanie</title>
+<style>
+  :root {
+    --bg: #f4ecdd;
+    --bg-glow: #fffaf0;
+    --surface: #fffdf8;
+    --surface-line: rgba(46, 28, 20, 0.14);
+    --ink: #241a14;
+    --ink-dim: #6e5c4e;
+    --holly: #b5232c;
+    --pine: #17603f;
+    --pine-deep: #0c4530;
+    --gold: #a8721c;
+    --snow: #ffffff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a1712;
+      --bg-glow: #16281d;
+      --surface: #12241b;
+      --surface-line: rgba(255, 255, 255, 0.09);
+      --ink: #f6f0e2;
+      --ink-dim: #a9b8ac;
+      --holly: #e8515a;
+      --pine: #4fa07a;
+      --pine-deep: #2c6b4d;
+      --gold: #eebd63;
+      --snow: #ffffff;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0a1712;
+    --bg-glow: #16281d;
+    --surface: #12241b;
+    --surface-line: rgba(255, 255, 255, 0.09);
+    --ink: #f6f0e2;
+    --ink-dim: #a9b8ac;
+    --holly: #e8515a;
+    --pine: #4fa07a;
+    --pine-deep: #2c6b4d;
+    --gold: #eebd63;
+    --snow: #ffffff;
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  * { box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  .scene {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-block: clamp(56px, 10vh, 92px) clamp(28px, 6vh, 64px);
+    padding-inline: 20px;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 8%, var(--bg-glow) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  #snow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .garland {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(100%, 640px);
+    height: auto;
+    z-index: 1;
+    padding: 0 18px;
+  }
+
+  .garland .bulb {
+    filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 9px currentColor);
+    animation: twinkle 2.6s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.48; }
+  }
+
+  .stage {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: clamp(14px, 2.6vh, 22px);
+    width: 100%;
+    max-width: 640px;
+  }
+
+  .tree {
+    width: clamp(64px, 15vw, 88px);
+    height: auto;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+  }
+
+  .eyebrow {
+    margin: 0;
+    font: 600 0.72rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--pine);
+  }
+
+  .headline {
+    margin: 0;
+    font-family: "Fraunces", Georgia, serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: clamp(1.7rem, 5.2vw, 2.9rem);
+    line-height: 1.08;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  .headline em {
+    font-style: italic;
+    color: var(--holly);
+  }
+
+  .countdown {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(8px, 2.4vw, 16px);
+    width: 100%;
+  }
+
+  .unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: clamp(12px, 3vw, 20px) 4px;
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-top: 4px solid var(--card-accent, var(--gold));
+    border-radius: 16px;
+    box-shadow: 0 12px 24px -18px rgba(0, 0, 0, 0.4);
+  }
+
+  .unit--holly { --card-accent: var(--holly); }
+  .unit--pine { --card-accent: var(--pine); }
+  .unit--gold { --card-accent: var(--gold); }
+
+  .num {
+    font-family: "Unbounded", "Familjen Grotesk", system-ui, sans-serif;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1.6rem, 6.4vw, 2.9rem);
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .label {
+    font: 600 0.62rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  .target {
+    margin: 0;
+    font: 500 0.92rem/1.5 "Familjen Grotesk", system-ui, sans-serif;
+    color: var(--ink-dim);
+  }
+
+  .target strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .progress-block {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .progress-figure {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .progress-value {
+    font-family: "Unbounded", "Familjen Grotesk", system-ui, sans-serif;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    line-height: 1;
+    color: var(--gold);
+  }
+
+  .progress-percent {
+    font-family: "Unbounded", "Familjen Grotesk", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.8rem, 2.6vw, 1.05rem);
+    color: var(--ink-dim);
+  }
+
+  .progress-track {
+    flex: 1;
+    min-width: 0;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--surface-line);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--pine), var(--gold));
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  .progress-caption {
+    margin: 0;
+    font: 500 0.76rem/1.4 "Familjen Grotesk", system-ui, sans-serif;
+    color: var(--ink-dim);
+  }
+
+  .celebration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .celebration .big {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 7vw, 3.4rem);
+    color: var(--holly);
+    text-wrap: balance;
+  }
+
+  .celebration p {
+    margin: 0;
+    color: var(--ink-dim);
+    font: 500 1rem/1.5 "Familjen Grotesk", system-ui, sans-serif;
+    max-width: 32ch;
+  }
+
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Unbounded:wght@700&display=swap">
+
+<div class="scene">
+  <canvas id="snow" aria-hidden="true"></canvas>
+
+  <svg class="garland" viewBox="0 0 600 44" preserveAspectRatio="xMidYMin meet" aria-hidden="true">
+    <path d="M0,6 Q50,42 100,6 Q150,42 200,6 Q250,42 300,6 Q350,42 400,6 Q450,42 500,6 Q550,42 600,6"
+          fill="none" stroke="var(--surface-line)" stroke-width="2"/>
+    <circle class="bulb" cx="50" cy="27" r="5" fill="currentColor" style="color:var(--holly); animation-delay:0s"/>
+    <circle class="bulb" cx="150" cy="27" r="5" fill="currentColor" style="color:var(--gold); animation-delay:.35s"/>
+    <circle class="bulb" cx="250" cy="27" r="5" fill="currentColor" style="color:var(--pine); animation-delay:.7s"/>
+    <circle class="bulb" cx="350" cy="27" r="5" fill="currentColor" style="color:var(--holly); animation-delay:1.05s"/>
+    <circle class="bulb" cx="450" cy="27" r="5" fill="currentColor" style="color:var(--gold); animation-delay:1.4s"/>
+    <circle class="bulb" cx="550" cy="27" r="5" fill="currentColor" style="color:var(--pine); animation-delay:1.75s"/>
+  </svg>
+
+  <main class="stage">
+    <svg class="tree" viewBox="0 0 140 168" aria-hidden="true">
+      <defs>
+        <radialGradient id="starGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="var(--gold)" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="70" cy="20" r="20" fill="url(#starGlow)"/>
+      <path d="M70 6 L75 18 L88 18 L77 26 L81 39 L70 31 L59 39 L63 26 L52 18 L65 18 Z" fill="var(--gold)"/>
+      <path d="M70 26 L100 66 L40 66 Z" fill="var(--pine-deep)"/>
+      <path d="M70 50 L112 98 L28 98 Z" fill="var(--pine)"/>
+      <path d="M70 80 L122 140 L18 140 Z" fill="var(--pine-deep)"/>
+      <rect x="61" y="140" width="18" height="18" rx="2" fill="var(--ink-dim)"/>
+      <circle cx="70" cy="72" r="4" fill="var(--holly)"/>
+      <circle cx="54" cy="92" r="4" fill="var(--gold)"/>
+      <circle cx="88" cy="94" r="4" fill="var(--holly)"/>
+      <circle cx="70" cy="110" r="4" fill="var(--snow)"/>
+      <circle cx="44" cy="118" r="4" fill="var(--gold)"/>
+      <circle cx="97" cy="122" r="4" fill="var(--holly)"/>
+      <circle cx="70" cy="132" r="4" fill="var(--gold)"/>
+    </svg>
+
+    <div id="countdownView">
+      <p class="eyebrow">🎄 Vianočné odpočítavanie</p>
+      <h1 class="headline">Do <em>Štedrého večera</em><br>zostáva</h1>
+
+      <div class="countdown" role="timer" aria-live="off" id="countdownGrid" style="margin-top: 20px;">
+        <div class="unit unit--holly">
+          <span class="num" id="dd">00</span>
+          <span class="label">dní</span>
+        </div>
+        <div class="unit unit--gold">
+          <span class="num" id="hh">00</span>
+          <span class="label">hodín</span>
+        </div>
+        <div class="unit unit--pine">
+          <span class="num" id="mm">00</span>
+          <span class="label">minút</span>
+        </div>
+        <div class="unit unit--holly">
+          <span class="num" id="ss">00</span>
+          <span class="label">sekúnd</span>
+        </div>
+      </div>
+
+      <p class="target" style="margin-top: 18px;">Cieľ: <strong id="targetLabel">24. december o 17:00</strong></p>
+
+      <div class="progress-block" style="margin-top: 22px;">
+        <div class="progress-row">
+          <div class="progress-figure">
+            <span class="progress-value" id="progressValue">0,00000</span>
+            <span class="progress-percent">%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <p class="progress-caption">cesty od minulých Vianoc už máme za sebou</p>
+      </div>
+    </div>
+
+    <div id="celebrationView" class="celebration" hidden>
+      <p class="eyebrow">Práve teraz</p>
+      <p class="big">Veselé Vianoce! 🎄</p>
+      <p>Nech je Štedrý večer plný pokoja, svetla a ľudí, na ktorých vám záleží.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  function christmasEve(year) {
+    return new Date(year, 11, 24, 17, 0, 0, 0);
+  }
+
+  function resolveTarget(now) {
+    var year = now.getFullYear();
+    var target = christmasEve(year);
+    var seasonEnd = new Date(year, 11, 26, 0, 0, 0, 0);
+
+    if (now >= target && now < seasonEnd) {
+      return { celebrating: true, target: target, prev: christmasEve(year - 1) };
+    }
+    if (now >= seasonEnd) {
+      target = christmasEve(year + 1);
+      return { celebrating: false, target: target, prev: christmasEve(year) };
+    }
+    return { celebrating: false, target: target, prev: christmasEve(year - 1) };
+  }
+
+  var dd = document.getElementById("dd");
+  var hh = document.getElementById("hh");
+  var mm = document.getElementById("mm");
+  var ss = document.getElementById("ss");
+  var targetLabel = document.getElementById("targetLabel");
+  var progressFill = document.getElementById("progressFill");
+  var progressValue = document.getElementById("progressValue");
+  var countdownView = document.getElementById("countdownView");
+  var celebrationView = document.getElementById("celebrationView");
+  var countdownGrid = document.getElementById("countdownGrid");
+
+  var monthsGenitive = ["januára", "februára", "marca", "apríla", "mája", "júna", "júla", "augusta", "septembra", "októbra", "novembra", "decembra"];
+
+  function pad(n) {
+    return String(n).padStart(2, "0");
+  }
+
+  function tick() {
+    var now = new Date();
+    var resolved = resolveTarget(now);
+
+    if (resolved.celebrating) {
+      countdownView.hidden = true;
+      celebrationView.hidden = false;
+      return;
+    }
+
+    countdownView.hidden = false;
+    celebrationView.hidden = true;
+
+    var diff = resolved.target - now;
+    var totalSeconds = Math.max(0, Math.floor(diff / 1000));
+    var days = Math.floor(totalSeconds / 86400);
+    var hours = Math.floor((totalSeconds % 86400) / 3600);
+    var minutes = Math.floor((totalSeconds % 3600) / 60);
+    var seconds = totalSeconds % 60;
+
+    dd.textContent = pad(days);
+    hh.textContent = pad(hours);
+    mm.textContent = pad(minutes);
+    ss.textContent = pad(seconds);
+
+    countdownGrid.setAttribute("aria-label", days + " dní, " + hours + " hodín, " + minutes + " minút, " + seconds + " sekúnd do Štedrého večera");
+
+    targetLabel.textContent = "24. " + monthsGenitive[11] + " " + resolved.target.getFullYear() + " o 17:00";
+
+    var total = resolved.target - resolved.prev;
+    var elapsed = now - resolved.prev;
+    var pct = Math.min(100, Math.max(0, (elapsed / total) * 100));
+    progressFill.style.width = pct.toFixed(2) + "%";
+    progressValue.textContent = pct.toFixed(5).replace(".", ",");
+  }
+
+  tick();
+  setInterval(tick, 1000);
+
+  // Snowfall
+  var canvas = document.getElementById("snow");
+  var ctx = canvas.getContext("2d");
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var flakes = [];
+  var w = 0, h = 0, dpr = 1;
+
+  function resize() {
+    var rect = canvas.parentElement.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  function seedFlakes() {
+    var count = Math.round((w * h) / 22000);
+    count = Math.max(18, Math.min(70, count));
+    flakes = [];
+    for (var i = 0; i < count; i++) {
+      flakes.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: 1 + Math.random() * 2.4,
+        speed: 0.25 + Math.random() * 0.6,
+        drift: Math.random() * 1.4 - 0.7,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = "rgba(255,255,255,0.85)";
+    for (var i = 0; i < flakes.length; i++) {
+      var f = flakes[i];
+      ctx.beginPath();
+      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function step() {
+    for (var i = 0; i < flakes.length; i++) {
+      var f = flakes[i];
+      f.y += f.speed;
+      f.x += Math.sin(f.phase + f.y * 0.01) * 0.3 + f.drift * 0.05;
+      if (f.y > h + 4) {
+        f.y = -4;
+        f.x = Math.random() * w;
+      }
+      if (f.x > w + 4) f.x = -4;
+      if (f.x < -4) f.x = w + 4;
+    }
+    draw();
+    if (!reduceMotion) requestAnimationFrame(step);
+  }
+
+  window.addEventListener("resize", function () {
+    resize();
+    seedFlakes();
+    if (reduceMotion) draw();
+  });
+
+  resize();
+  seedFlakes();
+  draw();
+  if (!reduceMotion) requestAnimationFrame(step);
+})();
+</script>
