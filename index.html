@@ -289,24 +289,76 @@
     max-width: 32ch;
   }
 
-  .game-section {
+  .games-window {
     width: 100%;
     max-width: 460px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
     margin-top: clamp(6px, 1.5vh, 14px);
     padding-top: clamp(20px, 4vh, 32px);
     border-top: 1px dashed var(--surface-line);
   }
 
-  .game-title {
-    margin: 4px 0 2px;
-    font-family: "Fraunces", Georgia, serif;
-    font-weight: 600;
-    font-size: clamp(1.3rem, 3.8vw, 1.7rem);
-    color: var(--ink);
+  .games-frame {
+    background: var(--surface);
+    border: 1px solid var(--surface-line);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 16px 32px -22px rgba(0, 0, 0, 0.35);
+  }
+
+  .games-frame__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--surface-line);
+  }
+
+  .games-frame__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .games-frame__dot--holly { background: var(--holly); }
+  .games-frame__dot--gold { background: var(--gold); }
+  .games-frame__dot--pine { background: var(--pine); }
+
+  .games-frame__label {
+    margin: 0 0 0 8px;
+    font: 600 0.66rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  .games-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    padding: 10px 10px 0;
+  }
+
+  .games-tab {
+    font: 700 0.82rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    color: var(--ink-dim);
+    background: transparent;
+    border: none;
+    border-radius: 10px 10px 0 0;
+    padding: 9px 14px 11px;
+    cursor: pointer;
+  }
+
+  .games-tab.is-active {
+    color: var(--holly);
+    box-shadow: inset 0 -3px 0 var(--holly);
+  }
+
+  .games-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 18px 16px 22px;
   }
 
   .game-bar {
@@ -552,19 +604,31 @@
       <p>Nech je Štedrý večer plný pokoja, svetla a ľudí, na ktorých vám záleží.</p>
     </div>
 
-    <section class="game-section">
-      <p class="eyebrow">Kým čakáte</p>
-      <h2 class="game-title">Vianočné pexeso</h2>
+    <section class="games-window">
+      <div class="games-frame">
+        <header class="games-frame__bar">
+          <span class="games-frame__dot games-frame__dot--holly" aria-hidden="true"></span>
+          <span class="games-frame__dot games-frame__dot--gold" aria-hidden="true"></span>
+          <span class="games-frame__dot games-frame__dot--pine" aria-hidden="true"></span>
+          <p class="games-frame__label">Kým čakáte</p>
+        </header>
 
-      <div class="game-bar">
-        <span class="game-stat">Páry <strong id="gameMatches">0</strong>/8</span>
-        <span class="game-stat">Ťahy <strong id="gameMoves">0</strong></span>
-        <button type="button" class="game-reset" id="gameReset">Zamiešať karty</button>
+        <nav class="games-tabs" role="tablist" aria-label="Vianočné hry">
+          <button type="button" class="games-tab is-active" role="tab" aria-selected="true" id="tab-pexeso" aria-controls="panel-pexeso" data-game-tab="pexeso">🧩 Vianočné pexeso</button>
+        </nav>
+
+        <div class="games-panel" role="tabpanel" id="panel-pexeso" aria-labelledby="tab-pexeso" data-game-panel="pexeso">
+          <div class="game-bar">
+            <span class="game-stat">Páry <strong id="gameMatches">0</strong>/8</span>
+            <span class="game-stat">Ťahy <strong id="gameMoves">0</strong></span>
+            <button type="button" class="game-reset" id="gameReset">Zamiešať karty</button>
+          </div>
+
+          <div class="memory-grid" id="memoryGrid" aria-label="Pexeso, 16 kartičiek"></div>
+
+          <p class="game-win" id="gameWin" hidden>🎉 Skvelé! Všetky páry nájdené za <strong id="gameWinMoves">0</strong> ťahov.</p>
+        </div>
       </div>
-
-      <div class="memory-grid" id="memoryGrid" aria-label="Pexeso, 16 kartičiek"></div>
-
-      <p class="game-win" id="gameWin" hidden>🎉 Skvelé! Všetky páry nájdené za <strong id="gameWinMoves">0</strong> ťahov.</p>
     </section>
   </main>
 </div>
@@ -720,6 +784,34 @@
   seedFlakes();
   draw();
   if (!reduceMotion) requestAnimationFrame(step);
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".games-tab"));
+  var panels = Array.prototype.slice.call(document.querySelectorAll(".games-panel"));
+
+  function activateGame(id) {
+    tabs.forEach(function (tab) {
+      var active = tab.dataset.gameTab === id;
+      tab.classList.toggle("is-active", active);
+      tab.setAttribute("aria-selected", active ? "true" : "false");
+    });
+    panels.forEach(function (panel) {
+      panel.hidden = panel.dataset.gamePanel !== id;
+    });
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      activateGame(tab.dataset.gameTab);
+    });
+  });
+
+  if (tabs.length) activateGame(tabs[0].dataset.gameTab);
 })();
 </script>
 
