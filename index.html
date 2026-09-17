@@ -516,10 +516,227 @@
     text-align: center;
   }
 
+  /* --- Posúvačka --- */
+  .slider-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(6px, 2vw, 10px);
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .slider-tile {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Unbounded", "Familjen Grotesk", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 6vw, 2rem);
+    color: #fff;
+    background: linear-gradient(135deg, var(--holly), var(--pine));
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+
+  .slider-tile:hover { transform: scale(1.03); }
+  .slider-tile:active { transform: scale(0.96); }
+
+  .slider-tile--empty {
+    background: transparent;
+    border: 2px dashed var(--surface-line);
+    cursor: default;
+  }
+
+  /* --- Sudoku --- */
+  .sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1;
+    background: var(--surface-line);
+    padding: 4px;
+    border-radius: 14px;
+    gap: 4px;
+  }
+
+  .sudoku-cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.1rem, 4.6vw, 1.6rem);
+    background: var(--surface);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  .sudoku-cell--given {
+    background: var(--bg);
+    color: var(--ink-dim);
+    cursor: default;
+  }
+
+  .sudoku-cell--wrong {
+    outline: 2px solid var(--holly);
+    outline-offset: -2px;
+  }
+
+  /* --- Chyť darček --- */
+  .catch-field {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 260px;
+    background: linear-gradient(180deg, var(--bg-glow), var(--bg));
+    border: 1px solid var(--surface-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .catch-hint {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    color: var(--ink-dim);
+    font: 500 0.88rem/1.4 "Familjen Grotesk", system-ui, sans-serif;
+  }
+
+  .catch-item {
+    position: absolute;
+    font-size: 1.7rem;
+    line-height: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    transform: translateX(-50%);
+  }
+
+  .catch-item:hover { transform: translateX(-50%) scale(1.15); }
+
+  /* --- Skladačka (jigsaw) --- */
+  .jigsaw-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1;
+    background: var(--surface-line);
+    padding: 3px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .jigsaw-tile {
+    padding: 0;
+    border: 2px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 4px;
+    position: relative;
+    line-height: 0;
+  }
+
+  .jigsaw-tile svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .jigsaw-tile.is-selected {
+    border-color: var(--gold);
+  }
+
+  /* --- Vianočné slovo (Wordle) --- */
+  .wordle-grid {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+
+  .wordle-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+  }
+
+  .wordle-cell {
+    width: clamp(32px, 8.5vw, 42px);
+    height: clamp(32px, 8.5vw, 42px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--surface-line);
+    border-radius: 8px;
+    font-family: "Unbounded", "Familjen Grotesk", system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.95rem, 3.8vw, 1.25rem);
+    color: var(--ink);
+    background: var(--surface);
+    text-transform: uppercase;
+  }
+
+  .wordle-cell--correct { background: var(--pine); border-color: var(--pine); color: #fff; }
+  .wordle-cell--present { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .wordle-cell--absent { background: var(--surface-line); border-color: var(--surface-line); color: var(--ink-dim); }
+
+  .wordle-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .wordle-kbrow {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .wordle-key {
+    flex: 1;
+    max-width: 30px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 6px;
+    background: var(--surface-line);
+    color: var(--ink);
+    font: 700 0.72rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .wordle-key--wide {
+    max-width: 52px;
+    font-size: 0.6rem;
+  }
+
+  .wordle-key--correct { background: var(--pine); color: #fff; }
+  .wordle-key--present { background: var(--gold); color: #fff; }
+  .wordle-key--absent { background: var(--ink-dim); color: var(--surface); opacity: 0.5; }
+
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Unbounded:wght@700&display=swap">
+
 </head>
 <body>
 <div class="scene">
@@ -614,7 +831,12 @@
         </header>
 
         <nav class="games-tabs" role="tablist" aria-label="Vianočné hry">
-          <button type="button" class="games-tab is-active" role="tab" aria-selected="true" id="tab-pexeso" aria-controls="panel-pexeso" data-game-tab="pexeso">🧩 Vianočné pexeso</button>
+          <button type="button" class="games-tab is-active" role="tab" aria-selected="true" id="tab-pexeso" aria-controls="panel-pexeso" data-game-tab="pexeso">🃏 Pexeso</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" id="tab-slider" aria-controls="panel-slider" data-game-tab="slider">🔀 Posúvačka</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" id="tab-sudoku" aria-controls="panel-sudoku" data-game-tab="sudoku">🔢 Sudoku</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" id="tab-catch" aria-controls="panel-catch" data-game-tab="catch">🎁 Chyť darček</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" id="tab-jigsaw" aria-controls="panel-jigsaw" data-game-tab="jigsaw">🧩 Skladačka</button>
+          <button type="button" class="games-tab" role="tab" aria-selected="false" id="tab-wordle" aria-controls="panel-wordle" data-game-tab="wordle">🔤 Slovo</button>
         </nav>
 
         <div class="games-panel" role="tabpanel" id="panel-pexeso" aria-labelledby="tab-pexeso" data-game-panel="pexeso">
@@ -627,6 +849,55 @@
           <div class="memory-grid" id="memoryGrid" aria-label="Pexeso, 16 kartičiek"></div>
 
           <p class="game-win" id="gameWin" hidden>🎉 Skvelé! Všetky páry nájdené za <strong id="gameWinMoves">0</strong> ťahov.</p>
+        </div>
+
+        <div class="games-panel" role="tabpanel" id="panel-slider" aria-labelledby="tab-slider" data-game-panel="slider" hidden>
+          <div class="game-bar">
+            <span class="game-stat">Ťahy <strong id="sliderMoves">0</strong></span>
+            <button type="button" class="game-reset" id="sliderReset">Zamiešať</button>
+          </div>
+          <div class="slider-grid" id="sliderGrid" aria-label="Posúvačka 3×3"></div>
+          <p class="game-win" id="sliderWin" hidden>🎉 Vyriešené za <strong id="sliderWinMoves">0</strong> ťahov!</p>
+        </div>
+
+        <div class="games-panel" role="tabpanel" id="panel-sudoku" aria-labelledby="tab-sudoku" data-game-panel="sudoku" hidden>
+          <div class="game-bar">
+            <span class="game-stat">Chyby <strong id="sudokuErrors">0</strong></span>
+            <button type="button" class="game-reset" id="sudokuCheck">Skontrolovať</button>
+            <button type="button" class="game-reset" id="sudokuReset">Nová hra</button>
+          </div>
+          <div class="sudoku-grid" id="sudokuGrid" aria-label="Sudoku 4×4"></div>
+          <p class="game-win" id="sudokuWin" hidden>🎉 Sudoku vyriešené správne!</p>
+        </div>
+
+        <div class="games-panel" role="tabpanel" id="panel-catch" aria-labelledby="tab-catch" data-game-panel="catch" hidden>
+          <div class="game-bar">
+            <span class="game-stat">Skóre <strong id="catchScore">0</strong></span>
+            <span class="game-stat">Čas <strong id="catchTime">30</strong> s</span>
+            <button type="button" class="game-reset" id="catchStart">Štart</button>
+          </div>
+          <div class="catch-field" id="catchField">
+            <p class="catch-hint" id="catchHint">Klikni na Štart a chytaj padajúce darčeky!</p>
+          </div>
+        </div>
+
+        <div class="games-panel" role="tabpanel" id="panel-jigsaw" aria-labelledby="tab-jigsaw" data-game-panel="jigsaw" hidden>
+          <div class="game-bar">
+            <span class="game-stat">Ťahy <strong id="jigsawMoves">0</strong></span>
+            <button type="button" class="game-reset" id="jigsawReset">Zamiešať</button>
+          </div>
+          <div class="jigsaw-grid" id="jigsawGrid" aria-label="Skladačka 3×3"></div>
+          <p class="game-win" id="jigsawWin" hidden>🎉 Obrázok poskladaný!</p>
+        </div>
+
+        <div class="games-panel" role="tabpanel" id="panel-wordle" aria-labelledby="tab-wordle" data-game-panel="wordle" hidden>
+          <div class="game-bar">
+            <span class="game-stat">Pokus <strong id="wordleAttempt">1</strong>/6</span>
+            <button type="button" class="game-reset" id="wordleReset">Nové slovo</button>
+          </div>
+          <div class="wordle-grid" id="wordleGrid" aria-label="Hracia mriežka"></div>
+          <p class="game-win" id="wordleMsg" hidden></p>
+          <div class="wordle-keyboard" id="wordleKeyboard"></div>
         </div>
       </div>
     </section>
@@ -957,5 +1228,628 @@
   buildBoard();
 })();
 </script>
+
+<script>
+(function () {
+  "use strict";
+
+  var SIZE = 3;
+  var grid = document.getElementById("sliderGrid");
+  var movesLabel = document.getElementById("sliderMoves");
+  var winMsg = document.getElementById("sliderWin");
+  var winMoves = document.getElementById("sliderWinMoves");
+  var resetBtn = document.getElementById("sliderReset");
+
+  var tiles = [];
+  var moves = 0;
+
+  function solvedState() {
+    var arr = [];
+    for (var i = 1; i < SIZE * SIZE; i++) arr.push(i);
+    arr.push(0);
+    return arr;
+  }
+
+  function isSolved() {
+    var solved = solvedState();
+    for (var i = 0; i < solved.length; i++) {
+      if (tiles[i] !== solved[i]) return false;
+    }
+    return true;
+  }
+
+  function neighborsOfEmpty() {
+    var emptyIndex = tiles.indexOf(0);
+    var row = Math.floor(emptyIndex / SIZE);
+    var col = emptyIndex % SIZE;
+    var result = [];
+    if (row > 0) result.push(emptyIndex - SIZE);
+    if (row < SIZE - 1) result.push(emptyIndex + SIZE);
+    if (col > 0) result.push(emptyIndex - 1);
+    if (col < SIZE - 1) result.push(emptyIndex + 1);
+    return result;
+  }
+
+  function shuffleTiles() {
+    tiles = solvedState();
+    var lastMove = -1;
+    for (var i = 0; i < 150; i++) {
+      var emptyIndex = tiles.indexOf(0);
+      var options = neighborsOfEmpty().filter(function (n) { return n !== lastMove; });
+      var pick = options[Math.floor(Math.random() * options.length)];
+      var tmp = tiles[pick];
+      tiles[pick] = tiles[emptyIndex];
+      tiles[emptyIndex] = tmp;
+      lastMove = emptyIndex;
+    }
+  }
+
+  function render() {
+    grid.innerHTML = "";
+    tiles.forEach(function (value, index) {
+      var tile = document.createElement("button");
+      tile.type = "button";
+      if (value === 0) {
+        tile.className = "slider-tile slider-tile--empty";
+        tile.disabled = true;
+        tile.setAttribute("aria-hidden", "true");
+      } else {
+        tile.className = "slider-tile";
+        tile.textContent = String(value);
+        tile.setAttribute("aria-label", "Dielik " + value);
+        tile.addEventListener("click", function () { onTileClick(index); });
+      }
+      grid.appendChild(tile);
+    });
+  }
+
+  function onTileClick(index) {
+    var emptyIndex = tiles.indexOf(0);
+    if (neighborsOfEmpty().indexOf(index) === -1) return;
+    var tmp = tiles[index];
+    tiles[index] = tiles[emptyIndex];
+    tiles[emptyIndex] = tmp;
+    moves++;
+    movesLabel.textContent = String(moves);
+    render();
+    if (isSolved()) {
+      winMoves.textContent = String(moves);
+      winMsg.hidden = false;
+    }
+  }
+
+  function startGame() {
+    shuffleTiles();
+    moves = 0;
+    movesLabel.textContent = "0";
+    winMsg.hidden = true;
+    render();
+  }
+
+  resetBtn.addEventListener("click", startGame);
+  startGame();
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var BASE_SOLUTION = [
+    [1, 2, 3, 4],
+    [3, 4, 1, 2],
+    [2, 1, 4, 3],
+    [4, 3, 2, 1]
+  ];
+  var SYMBOLS = ["🎄", "🎁", "⭐", "🔔"];
+
+  var grid = document.getElementById("sudokuGrid");
+  var errorsLabel = document.getElementById("sudokuErrors");
+  var winMsg = document.getElementById("sudokuWin");
+  var checkBtn = document.getElementById("sudokuCheck");
+  var resetBtn = document.getElementById("sudokuReset");
+
+  var solution = [];
+  var given = [];
+  var current = [];
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+    }
+    return arr;
+  }
+
+  function generateSolution() {
+    var rowOrder = shuffle([0, 1]).concat(shuffle([2, 3]));
+    if (Math.random() < 0.5) rowOrder = [rowOrder[2], rowOrder[3], rowOrder[0], rowOrder[1]];
+
+    var colOrder = shuffle([0, 1]).concat(shuffle([2, 3]));
+    if (Math.random() < 0.5) colOrder = [colOrder[2], colOrder[3], colOrder[0], colOrder[1]];
+
+    var symbolMap = shuffle([1, 2, 3, 4]);
+
+    var flat = [];
+    for (var r = 0; r < 4; r++) {
+      for (var c = 0; c < 4; c++) {
+        var val = BASE_SOLUTION[rowOrder[r]][colOrder[c]];
+        flat.push(symbolMap[val - 1]);
+      }
+    }
+    return flat;
+  }
+
+  function newPuzzle() {
+    solution = generateSolution();
+    var indices = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    var givenCount = 9;
+    given = new Array(16).fill(false);
+    for (var i = 0; i < givenCount; i++) given[indices[i]] = true;
+
+    current = solution.map(function (v, i) { return given[i] ? v : 0; });
+
+    errorsLabel.textContent = "0";
+    winMsg.hidden = true;
+    render();
+  }
+
+  function render() {
+    grid.innerHTML = "";
+    current.forEach(function (value, index) {
+      var col = index % 4;
+      var row = Math.floor(index / 4);
+      var cell = document.createElement("button");
+      cell.type = "button";
+      cell.className = "sudoku-cell" + (given[index] ? " sudoku-cell--given" : "");
+      cell.textContent = value ? SYMBOLS[value - 1] : "";
+      if (col === 1) cell.style.marginInlineEnd = "6px";
+      if (row === 1) cell.style.marginBlockEnd = "6px";
+
+      if (given[index]) {
+        cell.disabled = true;
+        cell.setAttribute("aria-label", "Daná bunka riadok " + (row + 1) + ", stĺpec " + (col + 1) + ": " + SYMBOLS[value - 1]);
+      } else {
+        cell.setAttribute("aria-label", "Bunka riadok " + (row + 1) + ", stĺpec " + (col + 1) + (value ? ": " + SYMBOLS[value - 1] : ", prázdna"));
+        cell.addEventListener("click", function () {
+          current[index] = (current[index] + 1) % 5;
+          render();
+        });
+      }
+
+      grid.appendChild(cell);
+    });
+  }
+
+  function checkSolution() {
+    var errors = 0;
+    var complete = true;
+    var cells = grid.querySelectorAll(".sudoku-cell");
+    current.forEach(function (value, index) {
+      cells[index].classList.remove("sudoku-cell--wrong");
+      if (value === 0) {
+        complete = false;
+      } else if (value !== solution[index]) {
+        errors++;
+        cells[index].classList.add("sudoku-cell--wrong");
+      }
+    });
+    errorsLabel.textContent = String(errors);
+    if (complete && errors === 0) {
+      winMsg.hidden = false;
+    }
+  }
+
+  checkBtn.addEventListener("click", checkSolution);
+  resetBtn.addEventListener("click", newPuzzle);
+
+  newPuzzle();
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var EMOJI = ["🎁", "🎄", "⭐", "🔔", "❄️"];
+  var field = document.getElementById("catchField");
+  var hint = document.getElementById("catchHint");
+  var scoreLabel = document.getElementById("catchScore");
+  var timeLabel = document.getElementById("catchTime");
+  var startBtn = document.getElementById("catchStart");
+
+  var DURATION = 30;
+  var score = 0;
+  var timeLeft = DURATION;
+  var running = false;
+  var spawnTimer = null;
+  var countdownTimer = null;
+  var activeItems = [];
+
+  function clearField() {
+    activeItems.forEach(function (item) {
+      cancelAnimationFrame(item.raf);
+      if (item.el && item.el.parentNode) item.el.parentNode.removeChild(item.el);
+    });
+    activeItems = [];
+  }
+
+  function removeItem(item) {
+    cancelAnimationFrame(item.raf);
+    if (item.el && item.el.parentNode) item.el.parentNode.removeChild(item.el);
+    var idx = activeItems.indexOf(item);
+    if (idx !== -1) activeItems.splice(idx, 1);
+  }
+
+  function spawnItem() {
+    var fieldWidth = field.clientWidth;
+    var fieldHeight = field.clientHeight;
+    var el = document.createElement("button");
+    el.type = "button";
+    el.className = "catch-item";
+    el.textContent = EMOJI[Math.floor(Math.random() * EMOJI.length)];
+    var x = 24 + Math.random() * Math.max(1, fieldWidth - 48);
+    el.style.left = x + "px";
+    el.style.top = "-30px";
+    field.appendChild(el);
+
+    var item = { el: el, y: -30, speed: 1 + Math.random() * 1.3, raf: 0 };
+    activeItems.push(item);
+
+    el.addEventListener("click", function () {
+      if (!running) return;
+      score++;
+      scoreLabel.textContent = String(score);
+      removeItem(item);
+    });
+
+    function step() {
+      item.y += item.speed;
+      el.style.top = item.y + "px";
+      if (item.y > fieldHeight) {
+        removeItem(item);
+        return;
+      }
+      item.raf = requestAnimationFrame(step);
+    }
+    item.raf = requestAnimationFrame(step);
+  }
+
+  function startGame() {
+    if (running) return;
+    running = true;
+    score = 0;
+    timeLeft = DURATION;
+    scoreLabel.textContent = "0";
+    timeLabel.textContent = String(timeLeft);
+    hint.hidden = true;
+    startBtn.textContent = "Beží…";
+    startBtn.disabled = true;
+
+    spawnTimer = setInterval(spawnItem, 700);
+    countdownTimer = setInterval(function () {
+      timeLeft--;
+      timeLabel.textContent = String(timeLeft);
+      if (timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  function endGame() {
+    running = false;
+    clearInterval(spawnTimer);
+    clearInterval(countdownTimer);
+    clearField();
+    startBtn.textContent = "Hrať znova";
+    startBtn.disabled = false;
+    hint.textContent = "Koniec! Skóre: " + score + ". Skús to znova.";
+    hint.hidden = false;
+  }
+
+  startBtn.addEventListener("click", startGame);
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var SIZE = 3;
+  var TILE = 100;
+
+  var SCENE_SHAPES =
+    '<rect x="0" y="0" width="300" height="300" fill="#0d1912"/>' +
+    '<circle cx="230" cy="55" r="26" fill="#eab55f" opacity="0.95"/>' +
+    '<circle cx="55" cy="45" r="3" fill="#eab55f"/>' +
+    '<circle cx="95" cy="85" r="2.5" fill="#eab55f"/>' +
+    '<circle cx="175" cy="35" r="2" fill="#eab55f"/>' +
+    '<circle cx="35" cy="135" r="2" fill="#eab55f"/>' +
+    '<circle cx="265" cy="145" r="2.5" fill="#eab55f"/>' +
+    '<circle cx="20" cy="220" r="2" fill="#eab55f"/>' +
+    '<path d="M150 85 L192 168 L108 168 Z" fill="#123d2c"/>' +
+    '<path d="M150 128 L202 218 L98 218 Z" fill="#1f6b47"/>' +
+    '<path d="M150 172 L212 268 L88 268 Z" fill="#123d2c"/>' +
+    '<rect x="139" y="268" width="22" height="20" fill="#6b5744"/>' +
+    '<circle cx="150" cy="78" r="9" fill="#eab55f"/>' +
+    '<circle cx="150" cy="148" r="5" fill="#c23b42"/>' +
+    '<circle cx="124" cy="188" r="5" fill="#eab55f"/>' +
+    '<circle cx="176" cy="198" r="5" fill="#c23b42"/>' +
+    '<circle cx="150" cy="228" r="5" fill="#eab55f"/>' +
+    '<circle cx="113" cy="245" r="5" fill="#c23b42"/>' +
+    '<circle cx="187" cy="250" r="5" fill="#eab55f"/>' +
+    '<rect x="0" y="289" width="300" height="11" fill="#fdfaf3"/>';
+
+  var grid = document.getElementById("jigsawGrid");
+  var movesLabel = document.getElementById("jigsawMoves");
+  var winMsg = document.getElementById("jigsawWin");
+  var resetBtn = document.getElementById("jigsawReset");
+
+  var order = [];
+  var selected = null;
+  var moves = 0;
+
+  function correctOrder() {
+    return [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  }
+
+  function isSolvedArr(arr) {
+    for (var i = 0; i < arr.length; i++) if (arr[i] !== i) return false;
+    return true;
+  }
+
+  function shuffleOrder() {
+    var arr;
+    do {
+      arr = correctOrder();
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+      }
+    } while (isSolvedArr(arr));
+    return arr;
+  }
+
+  function render() {
+    grid.innerHTML = "";
+    order.forEach(function (pieceId, index) {
+      var col = pieceId % SIZE;
+      var row = Math.floor(pieceId / SIZE);
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "jigsaw-tile" + (selected === index ? " is-selected" : "");
+
+      var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", (col * TILE) + " " + (row * TILE) + " " + TILE + " " + TILE);
+      svg.setAttribute("aria-hidden", "true");
+      svg.innerHTML = SCENE_SHAPES;
+      btn.appendChild(svg);
+
+      btn.setAttribute("aria-label", "Dielik na pozícii " + (index + 1));
+      btn.addEventListener("click", function () { onTileClick(index); });
+
+      grid.appendChild(btn);
+    });
+  }
+
+  function onTileClick(index) {
+    if (selected === null) {
+      selected = index;
+      render();
+      return;
+    }
+    if (selected === index) {
+      selected = null;
+      render();
+      return;
+    }
+    var tmp = order[selected];
+    order[selected] = order[index];
+    order[index] = tmp;
+    selected = null;
+    moves++;
+    movesLabel.textContent = String(moves);
+    render();
+
+    if (isSolvedArr(order)) {
+      winMsg.hidden = false;
+    }
+  }
+
+  function startGame() {
+    order = shuffleOrder();
+    selected = null;
+    moves = 0;
+    movesLabel.textContent = "0";
+    winMsg.hidden = true;
+    render();
+  }
+
+  resetBtn.addEventListener("click", startGame);
+  startGame();
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var WORDS = ["STROM", "ZVONY", "ANJEL", "CUKOR", "ORECH", "SANKY"];
+  var WORD_LENGTH = 5;
+  var MAX_ATTEMPTS = 6;
+  var KEYBOARD_ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
+
+  var panel = document.getElementById("panel-wordle");
+  var grid = document.getElementById("wordleGrid");
+  var keyboardEl = document.getElementById("wordleKeyboard");
+  var attemptLabel = document.getElementById("wordleAttempt");
+  var msg = document.getElementById("wordleMsg");
+  var resetBtn = document.getElementById("wordleReset");
+
+  var target = "";
+  var currentGuess = "";
+  var attempt = 0;
+  var finished = false;
+  var rows = [];
+  var keyStates = {};
+
+  function buildGrid() {
+    grid.innerHTML = "";
+    rows = [];
+    for (var r = 0; r < MAX_ATTEMPTS; r++) {
+      var rowEl = document.createElement("div");
+      rowEl.className = "wordle-row";
+      var cells = [];
+      for (var c = 0; c < WORD_LENGTH; c++) {
+        var cell = document.createElement("div");
+        cell.className = "wordle-cell";
+        rowEl.appendChild(cell);
+        cells.push(cell);
+      }
+      grid.appendChild(rowEl);
+      rows.push(cells);
+    }
+  }
+
+  function buildKeyboard() {
+    keyboardEl.innerHTML = "";
+    KEYBOARD_ROWS.forEach(function (rowLetters, i) {
+      var rowEl = document.createElement("div");
+      rowEl.className = "wordle-kbrow";
+
+      if (i === 2) {
+        var enterKey = document.createElement("button");
+        enterKey.type = "button";
+        enterKey.className = "wordle-key wordle-key--wide";
+        enterKey.textContent = "OK";
+        enterKey.addEventListener("click", submitGuess);
+        rowEl.appendChild(enterKey);
+      }
+
+      rowLetters.split("").forEach(function (letter) {
+        var key = document.createElement("button");
+        key.type = "button";
+        key.className = "wordle-key";
+        key.textContent = letter;
+        key.dataset.letter = letter;
+        key.addEventListener("click", function () { typeLetter(letter); });
+        rowEl.appendChild(key);
+      });
+
+      if (i === 2) {
+        var backKey = document.createElement("button");
+        backKey.type = "button";
+        backKey.className = "wordle-key wordle-key--wide";
+        backKey.textContent = "⌫";
+        backKey.addEventListener("click", deleteLetter);
+        rowEl.appendChild(backKey);
+      }
+
+      keyboardEl.appendChild(rowEl);
+    });
+  }
+
+  function typeLetter(letter) {
+    if (finished || currentGuess.length >= WORD_LENGTH) return;
+    currentGuess += letter;
+    updateCurrentRow();
+  }
+
+  function deleteLetter() {
+    if (finished || currentGuess.length === 0) return;
+    currentGuess = currentGuess.slice(0, -1);
+    updateCurrentRow();
+  }
+
+  function updateCurrentRow() {
+    var cells = rows[attempt];
+    for (var i = 0; i < WORD_LENGTH; i++) {
+      cells[i].textContent = currentGuess[i] || "";
+    }
+  }
+
+  function submitGuess() {
+    if (finished || currentGuess.length !== WORD_LENGTH) return;
+
+    var guess = currentGuess;
+    var cells = rows[attempt];
+    var targetLetters = target.split("");
+    var guessLetters = guess.split("");
+    var states = new Array(WORD_LENGTH).fill("absent");
+    var rank = { absent: 0, present: 1, correct: 2 };
+
+    guessLetters.forEach(function (letter, i) {
+      if (letter === targetLetters[i]) {
+        states[i] = "correct";
+        targetLetters[i] = null;
+      }
+    });
+    guessLetters.forEach(function (letter, i) {
+      if (states[i] === "correct") return;
+      var idx = targetLetters.indexOf(letter);
+      if (idx !== -1) {
+        states[i] = "present";
+        targetLetters[idx] = null;
+      }
+    });
+
+    states.forEach(function (state, i) {
+      cells[i].classList.add("wordle-cell--" + state);
+      var letter = guessLetters[i];
+      if (!keyStates[letter] || rank[state] > rank[keyStates[letter]]) {
+        keyStates[letter] = state;
+        var keyEl = keyboardEl.querySelector('[data-letter="' + letter + '"]');
+        if (keyEl) {
+          keyEl.classList.remove("wordle-key--correct", "wordle-key--present", "wordle-key--absent");
+          keyEl.classList.add("wordle-key--" + state);
+        }
+      }
+    });
+
+    if (guess === target) {
+      finished = true;
+      msg.textContent = "🎉 Uhádli ste! Slovo bolo " + target + ".";
+      msg.hidden = false;
+      return;
+    }
+
+    attempt++;
+    currentGuess = "";
+
+    if (attempt >= MAX_ATTEMPTS) {
+      finished = true;
+      msg.textContent = "Škoda! Slovo bolo " + target + ".";
+      msg.hidden = false;
+    } else {
+      attemptLabel.textContent = String(attempt + 1);
+    }
+  }
+
+  function onKeydown(e) {
+    if (panel.hidden) return;
+    if (e.key === "Enter") { submitGuess(); return; }
+    if (e.key === "Backspace") { deleteLetter(); return; }
+    var letter = e.key.toUpperCase();
+    if (/^[A-Z]$/.test(letter)) typeLetter(letter);
+  }
+
+  function startGame() {
+    target = WORDS[Math.floor(Math.random() * WORDS.length)];
+    currentGuess = "";
+    attempt = 0;
+    finished = false;
+    keyStates = {};
+    attemptLabel.textContent = "1";
+    msg.hidden = true;
+    msg.textContent = "";
+    buildGrid();
+    buildKeyboard();
+  }
+
+  document.addEventListener("keydown", onKeydown);
+  resetBtn.addEventListener("click", startGame);
+
+  startGame();
+})();
+</script>
+
 </body>
 </html>
