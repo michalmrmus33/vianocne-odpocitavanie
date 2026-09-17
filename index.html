@@ -289,6 +289,181 @@
     max-width: 32ch;
   }
 
+  .game-section {
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-top: clamp(6px, 1.5vh, 14px);
+    padding-top: clamp(20px, 4vh, 32px);
+    border-top: 1px dashed var(--surface-line);
+  }
+
+  .game-title {
+    margin: 4px 0 2px;
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.3rem, 3.8vw, 1.7rem);
+    color: var(--ink);
+  }
+
+  .game-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    margin: 10px 0 16px;
+  }
+
+  .game-stat {
+    font: 600 0.8rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    color: var(--ink-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .game-stat strong {
+    color: var(--ink);
+  }
+
+  .game-reset {
+    font: 600 0.78rem/1 "Familjen Grotesk", system-ui, sans-serif;
+    letter-spacing: 0.03em;
+    color: #fff;
+    background: var(--holly);
+    border: none;
+    border-radius: 999px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+
+  .game-reset:hover { filter: brightness(1.1); }
+  .game-reset:active { transform: scale(0.96); }
+
+  .memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(7px, 2vw, 12px);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .memory-card {
+    aspect-ratio: 1;
+    perspective: 800px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.18));
+    transition: filter 0.65s ease;
+  }
+
+  .memory-card.is-matched {
+    cursor: default;
+  }
+
+  .memory-card.is-flipping {
+    z-index: 5;
+    filter: drop-shadow(0 18px 22px rgba(0, 0, 0, 0.32));
+    animation: cardLift 0.65s ease;
+  }
+
+  @keyframes cardLift {
+    0%, 100% { transform: translateY(0) scale(1); }
+    45% { transform: translateY(-7px) scale(1.07); }
+  }
+
+  .memory-card:focus-visible .card-inner {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 14px;
+  }
+
+  .card-inner {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.65s cubic-bezier(.34, 1.15, .4, 1);
+  }
+
+  .memory-card.is-flipped .card-inner,
+  .memory-card.is-matched .card-inner {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, var(--pine-deep), var(--pine));
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+  }
+
+  .card-front {
+    background: var(--surface);
+    border: 2px solid var(--surface-line);
+    transform: rotateY(180deg);
+  }
+
+  .memory-card.is-matched .card-front {
+    border-color: var(--gold);
+  }
+
+  .card-front .symbol {
+    display: inline-block;
+    font-size: clamp(2.1rem, 9.5vw, 3.2rem);
+    line-height: 1;
+    opacity: 0;
+  }
+
+  .memory-card.is-flipped .card-front .symbol,
+  .memory-card.is-matched .card-front .symbol {
+    animation: symbolPop 0.55s cubic-bezier(.34, 1.56, .64, 1) 0.15s both;
+  }
+
+  .memory-card.is-matched .card-front .symbol {
+    animation:
+      symbolPop 0.55s cubic-bezier(.34, 1.56, .64, 1) 0.15s both,
+      symbolFloat 2.6s ease-in-out 0.8s infinite;
+  }
+
+  @keyframes symbolPop {
+    0% { transform: scale(0.3) rotate(-12deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(6deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  @keyframes symbolFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(-3deg); }
+  }
+
+  .game-win {
+    margin: 12px 0 0;
+    font: 600 0.95rem/1.4 "Familjen Grotesk", system-ui, sans-serif;
+    color: var(--pine);
+    text-align: center;
+  }
+
 </style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -376,6 +551,21 @@
       <p class="big">Veselé Vianoce! 🎄</p>
       <p>Nech je Štedrý večer plný pokoja, svetla a ľudí, na ktorých vám záleží.</p>
     </div>
+
+    <section class="game-section">
+      <p class="eyebrow">Kým čakáte</p>
+      <h2 class="game-title">Vianočné pexeso</h2>
+
+      <div class="game-bar">
+        <span class="game-stat">Páry <strong id="gameMatches">0</strong>/8</span>
+        <span class="game-stat">Ťahy <strong id="gameMoves">0</strong></span>
+        <button type="button" class="game-reset" id="gameReset">Zamiešať karty</button>
+      </div>
+
+      <div class="memory-grid" id="memoryGrid" aria-label="Pexeso, 16 kartičiek"></div>
+
+      <p class="game-win" id="gameWin" hidden>🎉 Skvelé! Všetky páry nájdené za <strong id="gameWinMoves">0</strong> ťahov.</p>
+    </section>
   </main>
 </div>
 
@@ -530,6 +720,149 @@
   seedFlakes();
   draw();
   if (!reduceMotion) requestAnimationFrame(step);
+})();
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  var SYMBOLS = ["🎄", "🎅", "🎁", "⭐", "🔔", "❄️", "🦌", "🕯️"];
+
+  var grid = document.getElementById("memoryGrid");
+  var matchesLabel = document.getElementById("gameMatches");
+  var movesLabel = document.getElementById("gameMoves");
+  var winMsg = document.getElementById("gameWin");
+  var winMoves = document.getElementById("gameWinMoves");
+  var resetBtn = document.getElementById("gameReset");
+
+  var flipped = [];
+  var lock = false;
+  var matches = 0;
+  var moves = 0;
+
+  function shuffle(list) {
+    for (var i = list.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = list[i];
+      list[i] = list[j];
+      list[j] = tmp;
+    }
+    return list;
+  }
+
+  function cardLabel(card, revealed) {
+    var position = Number(card.dataset.index) + 1;
+    return revealed
+      ? "Karta " + position + ": " + card.dataset.symbol
+      : "Karta " + position + ", skrytá";
+  }
+
+  function triggerLift(card) {
+    card.classList.remove("is-flipping");
+    void card.offsetWidth;
+    card.classList.add("is-flipping");
+    setTimeout(function () {
+      card.classList.remove("is-flipping");
+    }, 650);
+  }
+
+  function onCardClick(card) {
+    if (lock) return;
+    if (card.classList.contains("is-flipped") || card.classList.contains("is-matched")) return;
+    if (flipped.length === 2) return;
+
+    card.classList.add("is-flipped");
+    triggerLift(card);
+    card.setAttribute("aria-label", cardLabel(card, true));
+    flipped.push(card);
+
+    if (flipped.length === 2) {
+      moves++;
+      movesLabel.textContent = String(moves);
+      lock = true;
+
+      var a = flipped[0];
+      var b = flipped[1];
+
+      if (a.dataset.symbol === b.dataset.symbol) {
+        setTimeout(function () {
+          a.classList.add("is-matched");
+          b.classList.add("is-matched");
+          matches++;
+          matchesLabel.textContent = String(matches);
+          flipped = [];
+          lock = false;
+
+          if (matches === SYMBOLS.length) {
+            winMoves.textContent = String(moves);
+            winMsg.hidden = false;
+          }
+        }, 600);
+      } else {
+        setTimeout(function () {
+          triggerLift(a);
+          triggerLift(b);
+          a.classList.remove("is-flipped");
+          b.classList.remove("is-flipped");
+          a.setAttribute("aria-label", cardLabel(a, false));
+          b.setAttribute("aria-label", cardLabel(b, false));
+          flipped = [];
+          lock = false;
+        }, 1000);
+      }
+    }
+  }
+
+  function buildBoard() {
+    var deck = shuffle(SYMBOLS.concat(SYMBOLS));
+
+    grid.innerHTML = "";
+    flipped = [];
+    lock = false;
+    matches = 0;
+    moves = 0;
+    matchesLabel.textContent = "0";
+    movesLabel.textContent = "0";
+    winMsg.hidden = true;
+
+    deck.forEach(function (symbol, index) {
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "memory-card";
+      card.dataset.symbol = symbol;
+      card.dataset.index = String(index);
+
+      var inner = document.createElement("span");
+      inner.className = "card-inner";
+
+      var back = document.createElement("span");
+      back.className = "card-face card-back";
+      back.setAttribute("aria-hidden", "true");
+      back.textContent = "❄";
+
+      var front = document.createElement("span");
+      front.className = "card-face card-front";
+      front.setAttribute("aria-hidden", "true");
+
+      var symbolEl = document.createElement("span");
+      symbolEl.className = "symbol";
+      symbolEl.textContent = symbol;
+      front.appendChild(symbolEl);
+
+      inner.appendChild(back);
+      inner.appendChild(front);
+      card.appendChild(inner);
+      card.setAttribute("aria-label", cardLabel(card, false));
+      card.addEventListener("click", function () { onCardClick(card); });
+
+      grid.appendChild(card);
+    });
+  }
+
+  resetBtn.addEventListener("click", buildBoard);
+
+  buildBoard();
 })();
 </script>
 </body>
